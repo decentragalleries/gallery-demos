@@ -161,15 +161,67 @@ export const importDemoModels = (scene, localCamera) => {
     [2876, 31, -49],
     500
   );
-  // importDemoModel(
-  //   "Classic",
-  //   "classic gallery/",
-  //   "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
-  //   "classic gallery small frame type 1.glb",
-  //   [3000, 13, 0],
-  //   [2876, 31, -49],
-  //   500
-  // );
+
+  importDemoModel(
+    "Classic",
+    "classic gallery/",
+    "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
+    "classic gallery small door 2 part 1.glb",
+    [3000, 13, 0],
+    [2870, 31, -34],
+    500
+  );
+
+  importDemoModel(
+    "Classic",
+    "classic gallery/",
+    "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
+    "classic gallery small door 2 part 2.glb",
+    [3000, 13, 0],
+    [2870, 31, -34],
+    500
+  );
+
+  importDemoModel(
+    "Classic",
+    "classic gallery/",
+    "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
+    "classic gallery small door 1 part 1.glb",
+    [3000, 13, 0],
+    [2870, 31, -34],
+    500
+  );
+
+  importDemoModel(
+    "Classic",
+    "classic gallery/",
+    "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
+    "classic gallery small door 1 part 2.glb",
+    [3000, 13, 0],
+    [2870, 31, -34],
+    500
+  );
+
+
+  importDemoModel(
+    "Classic",
+    "classic gallery/",
+    "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
+    "classic gallery small frame type 1.glb",
+    [3000, 13, 0],
+    [2824, 31, -185],
+    500
+  );
+
+  importDemoModel(
+    "Classic",
+    "classic gallery/",
+    "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
+    "classic gallery small frame type 2.glb",
+    [2970, 13, 0],
+    [2824, 31, -185],
+    500
+  );
   importDemoModel(
     "Gothic",
     "gothic gallery/",
