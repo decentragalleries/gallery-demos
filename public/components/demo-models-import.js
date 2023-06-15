@@ -155,17 +155,26 @@ export const importDemoModels = (scene, localCamera) => {
   importDemoModel(
     "Classic",
     "classic gallery/",
-    "https://gateway.pinata.cloud/ipfs/QmVA51se5mZHk8vR1Gntr2xxEPr8ihPKus4jisWEY4ojqB/",
-    " classic gallery small base model .glb",
+    "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
+    "classic gallery small base model.glb",
     [3000, 13, 0],
     [2876, 31, -49],
     500
   );
+  // importDemoModel(
+  //   "Classic",
+  //   "classic gallery/",
+  //   "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
+  //   "classic gallery small frame type 1.glb",
+  //   [3000, 13, 0],
+  //   [2876, 31, -49],
+  //   500
+  // );
   importDemoModel(
     "Gothic",
     "gothic gallery/",
-    "https://gateway.pinata.cloud/ipfs/QmXEcJh4fojRr1EPZBQKfnjZ2A7AmJemBTEghTqCJYnLLR/",
-    "gothic gallery small .glb",
+    "https://gateway.pinata.cloud/ipfs/QmYa8j4UHUBin4uPrvEkG934ZuCKXsoiPTiSJ2ExH1LFr1/",
+    "gothic gallery small.glb",
     [4000, 0, 0],
     [3920, 14, -102],
     500
