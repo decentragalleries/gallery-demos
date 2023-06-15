@@ -1,16 +1,16 @@
-const isLocalPath = true;
-const count = 5;
+const isLocalPath = false;
+const count = 2;
 
 const loading = Array.from(Array(count), (el) => true);
 const UI_HEIGHT_PERC = 0.3;
-const remoteDir =
-  "https://gateway.pinata.cloud/ipfs/QmZnQo8yXPU2e2jueVtyoH8B6wf5JHqEnNFqAQaMAYZ3Ty/";
 var index = 0;
 var stackPanel = null;
 var camera = null;
 
 const importDemoModel = (
   btnName,
+  localPath,
+  remotePath,
   fileName,
   position,
   cameraPos,
@@ -23,7 +23,7 @@ const importDemoModel = (
 
   BABYLON.SceneLoader.ImportMeshAsync(
     "",
-    isLocalPath ? "models/" : remoteDir,
+    isLocalPath ? `models/${localPath}` : remotePath,
     fileName
   ).then((result) => {
     result.meshes.forEach((mesh) => {
@@ -125,31 +125,47 @@ export const importDemoModels = (scene, localCamera) => {
   //   }
   // });
 
-  importDemoModel("Room 1", "room test 1.glb", [0, 0, 0], [-26, 14, -15], 150);
-  importDemoModel(
-    "Room 2",
-    "room test 2.glb",
-    [1000, 0, 0],
-    [617, 14, -42.4],
-    150
-  );
-  importDemoModel(
-    "Test Gallery",
-    "old_gallery.glb",
-    [2000, 0, 0],
-    [1417, 14, -59],
-    500
-  );
+  // importDemoModel(
+  //   "Room 1",
+  //   "",
+  //   "https://gateway.pinata.cloud/ipfs/QmZnQo8yXPU2e2jueVtyoH8B6wf5JHqEnNFqAQaMAYZ3Ty/",
+  //   "room test 1.glb",
+  //   [0, 0, 0],
+  //   [-26, 14, -15],
+  //   150
+  // );
+  // importDemoModel(
+  //   "Room 2",
+  //   "",
+  //   "https://gateway.pinata.cloud/ipfs/QmZnQo8yXPU2e2jueVtyoH8B6wf5JHqEnNFqAQaMAYZ3Ty/",
+  //   "room test 2.glb",
+  //   [1000, 0, 0],
+  //   [617, 14, -42.4],
+  //   150
+  // );
+  // importDemoModel(
+  //   "Test Gallery",
+  //   "",
+  //   "https://gateway.pinata.cloud/ipfs/QmZnQo8yXPU2e2jueVtyoH8B6wf5JHqEnNFqAQaMAYZ3Ty/",
+  //   "old_gallery.glb",
+  //   [2000, 0, 0],
+  //   [1417, 14, -59],
+  //   500
+  // );
   importDemoModel(
     "Classic",
-    "classic gallery/classic gallery small base model.glb",
+    "classic gallery/",
+    "https://gateway.pinata.cloud/ipfs/QmVA51se5mZHk8vR1Gntr2xxEPr8ihPKus4jisWEY4ojqB/",
+    " classic gallery small base model .glb",
     [3000, 13, 0],
     [2876, 31, -49],
     500
   );
   importDemoModel(
     "Gothic",
-    "gothic gallery/gothic gallery small.glb",
+    "gothic gallery/",
+    "https://gateway.pinata.cloud/ipfs/QmXEcJh4fojRr1EPZBQKfnjZ2A7AmJemBTEghTqCJYnLLR/",
+    "gothic gallery small .glb",
     [4000, 0, 0],
     [3920, 14, -102],
     500
