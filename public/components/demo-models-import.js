@@ -14,7 +14,8 @@ const importDemoModel = (
   fileName,
   position,
   cameraPos,
-  cameraMaxZ
+  cameraMaxZ,
+  isTeleportable = false
 ) => {
   const localIndex = index;
   index++;
@@ -44,12 +45,14 @@ const importDemoModel = (
       position[2]
     );
 
-    loading[localIndex] = false;
-    if (loading.indexOf(true) === -1)
-      document.getElementById("loading").style.display = "none";
+    if (isTeleportable) {
+      loading[localIndex] = false;
+      if (loading.indexOf(true) === -1)
+        document.getElementById("loading").style.display = "none";
+    }
   });
 
-  if (stackPanel) {
+  if (isTeleportable && stackPanel) {
     const roomBtn = BABYLON.GUI.Button.CreateSimpleButton(
       `roomBtn${localIndex + 1}`,
       btnName
@@ -132,7 +135,8 @@ export const importDemoModels = (scene, localCamera) => {
     "room test 1.glb",
     [0, 0, 0],
     [-26, 14, -15],
-    150
+    150,
+    true
   );
   importDemoModel(
     "Room 2",
@@ -141,7 +145,8 @@ export const importDemoModels = (scene, localCamera) => {
     "room test 2.glb",
     [1000, 0, 0],
     [617, 14, -42.4],
-    150
+    150,
+    true
   );
   importDemoModel(
     "Test Gallery",
@@ -150,7 +155,8 @@ export const importDemoModels = (scene, localCamera) => {
     "old_gallery.glb",
     [2000, 0, 0],
     [1417, 14, -59],
-    500
+    500,
+    true
   );
   importDemoModel(
     "Classic",
@@ -159,7 +165,8 @@ export const importDemoModels = (scene, localCamera) => {
     "classic gallery small base model.glb",
     [3000, 13, 0],
     [2876, 31, -49],
-    500
+    500,
+    true
   );
 
   importDemoModel(
@@ -202,7 +209,6 @@ export const importDemoModels = (scene, localCamera) => {
     500
   );
 
-
   importDemoModel(
     "Classic",
     "classic gallery/",
@@ -229,6 +235,7 @@ export const importDemoModels = (scene, localCamera) => {
     "gothic gallery small.glb",
     [4000, 0, 0],
     [3920, 14, -102],
-    500
+    500,
+    true
   );
 };
