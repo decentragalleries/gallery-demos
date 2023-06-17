@@ -8,10 +8,10 @@ const app = express();
 // const key = fs.readFileSync("keys/localhost-key.pem", "utf-8");
 // const cert = fs.readFileSync("keys/localhost.pem", "utf-8");
 
-app.use("/", express.static(dirname("./") + "/public"));
+app.use("/", express.static(dirname("./") + "/docs"));
 
 app.get("/", function (req, res) {
-  res.sendFile(path.join(dirname("./") + "/public/index.html"));
+  res.sendFile(path.join(dirname("./") + "/docs/index.html"));
 });
 
 // https.createServer({ key, cert }, app).listen(3000);

@@ -18,7 +18,7 @@ const importDemoModel = (
   isTeleportable = false
 ) => {
   const localIndex = index;
-  index++;
+  if (isTeleportable) index++;
 
   const modelNode = new BABYLON.TransformNode();
 
