@@ -24,7 +24,7 @@ const importDemoModel = (
 
   BABYLON.SceneLoader.ImportMeshAsync(
     "",
-    isLocalPath ? `models/${localPath}` : remotePath,
+    isLocalPath ? `../../models/${localPath}` : remotePath,
     fileName
   ).then((result) => {
     result.meshes.forEach((mesh) => {
