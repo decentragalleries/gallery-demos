@@ -49,7 +49,7 @@ export const createScene = async (engine, canvas) => {
   ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
   ground.checkCollisions = true;
   ground.position = new BABYLON.Vector3(0, -0.02, 0);
-  const groundMaterial = new BABYLON.StandardMaterial(scene);
+  const groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
   groundMaterial.alpha = 1;
   groundMaterial.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
   ground.material = groundMaterial;

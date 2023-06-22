@@ -47,7 +47,7 @@ export const createScene = async (engine, canvas) => {
   ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
   ground.checkCollisions = true;
   ground.position = new BABYLON.Vector3(0, -0.02, 0);
-  const groundMaterial = new BABYLON.StandardMaterial(scene);
+  const groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
   groundMaterial.alpha = 1;
   groundMaterial.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
   ground.material = groundMaterial;
@@ -68,14 +68,14 @@ export const createScene = async (engine, canvas) => {
     // backUV: b
   });
 
-  var mat = new BABYLON.StandardMaterial("", scene);
-  mat.emissiveTexture = new BABYLON.Texture(
+  var skyMaterial = new BABYLON.StandardMaterial("skyMaterial", scene);
+  skyMaterial.emissiveTexture = new BABYLON.Texture(
     "../../assets/industrial_sunset_puresky_4k.hdr",
     scene
   );
-  mat.emissiveTexture.level = 0.5
-  mat.disableLighting = true;
-  sphere.material = mat;
+  skyMaterial.emissiveTexture.level = 0.5;
+  skyMaterial.disableLighting = true;
+  sphere.material = skyMaterial;
   sphere.rotation = new BABYLON.Vector3(Math.PI, 0, 0);
 
   const rotationAnimation1 = new BABYLON.Animation(
@@ -100,7 +100,7 @@ export const createScene = async (engine, canvas) => {
     },
     {
       frame: 1,
-      value: - 2 * Math.PI,
+      value: -2 * Math.PI,
     },
   ]);
   rotationAnimation2.setKeys([
