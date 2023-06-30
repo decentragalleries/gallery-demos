@@ -15,7 +15,8 @@ const importDemoModel = (
   position,
   cameraPos,
   cameraMaxZ,
-  isTeleportable = false
+  isTeleportable = false,
+  container = null,
 ) => {
   const localIndex = index;
   if (isTeleportable) index++;
@@ -30,6 +31,9 @@ const importDemoModel = (
     result.meshes.forEach((mesh) => {
       if (mesh.id !== "G-__563250" && mesh.id !== "G-__555888") {
         mesh.checkCollisions = true;
+        if(container){
+          container.meshes.push(mesh)
+        }
       }
       if (!mesh.parent) {
         mesh.parent = modelNode;
@@ -112,7 +116,7 @@ const setupStackPanel = () => {
   return stackPanel;
 };
 
-export const importDemoModels = (scene, localCamera) => {
+export const importDemoModels = (scene, localCamera, container = null) => {
   camera = localCamera;
   camera.speed = 1.5;
   camera.maxZ = 150;
@@ -136,7 +140,8 @@ export const importDemoModels = (scene, localCamera) => {
     [0, 0, 0],
     [-26, 14, -15],
     150,
-    true
+    true,
+    container,
   );
   importDemoModel(
     "Room 2",
@@ -146,7 +151,8 @@ export const importDemoModels = (scene, localCamera) => {
     [1000, 0, 0],
     [617, 14, -42.4],
     150,
-    true
+    true,
+    container,
   );
   importDemoModel(
     "Test Gallery",
@@ -156,7 +162,8 @@ export const importDemoModels = (scene, localCamera) => {
     [2000, 0, 0],
     [1417, 14, -59],
     500,
-    true
+    true,
+    container,
   );
   importDemoModel(
     "Classic",
@@ -166,7 +173,8 @@ export const importDemoModels = (scene, localCamera) => {
     [3000, 13, 0],
     [2876, 31, -49],
     500,
-    true
+    true,
+    container,
   );
 
   importDemoModel(
@@ -176,7 +184,9 @@ export const importDemoModels = (scene, localCamera) => {
     "classic gallery small door 2 part 1.glb",
     [3000, 13, 0],
     [2870, 31, -34],
-    500
+    500,
+    false,
+    container,
   );
 
   importDemoModel(
@@ -186,7 +196,9 @@ export const importDemoModels = (scene, localCamera) => {
     "classic gallery small door 2 part 2.glb",
     [3000, 13, 0],
     [2870, 31, -34],
-    500
+    500,
+    false,
+    container,
   );
 
   importDemoModel(
@@ -196,7 +208,9 @@ export const importDemoModels = (scene, localCamera) => {
     "classic gallery small door 1 part 1.glb",
     [3000, 13, 0],
     [2870, 31, -34],
-    500
+    500,
+    false,
+    container,
   );
 
   importDemoModel(
@@ -206,7 +220,9 @@ export const importDemoModels = (scene, localCamera) => {
     "classic gallery small door 1 part 2.glb",
     [3000, 13, 0],
     [2870, 31, -34],
-    500
+    500,
+    false,
+    container,
   );
 
   importDemoModel(
@@ -216,7 +232,9 @@ export const importDemoModels = (scene, localCamera) => {
     "classic gallery small frame type 1.glb",
     [3000, 13, 0],
     [2824, 31, -185],
-    500
+    500,
+    false,
+    container,
   );
 
   importDemoModel(
@@ -226,7 +244,9 @@ export const importDemoModels = (scene, localCamera) => {
     "classic gallery small frame type 2.glb",
     [2970, 13, 0],
     [2824, 31, -185],
-    500
+    500,
+    false,
+    container,
   );
   importDemoModel(
     "Gothic",
@@ -236,6 +256,7 @@ export const importDemoModels = (scene, localCamera) => {
     [4000, 0, 0],
     [3920, 14, -102],
     500,
-    true
+    true,
+    container,
   );
 };
