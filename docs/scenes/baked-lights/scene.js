@@ -36,6 +36,28 @@ export const createScene = async (engine, canvas) => {
   camera.keysRight.push(68);
   camera.keysDown.push(83);
 
+  	// Minimap
+    // camera.layerMask = 1;
+    // mm.setTarget(new BABYLON.Vector3(0.1,3.0,0.1));
+    // mm.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
+	
+    // mm.orthoLeft = -400/2;
+    // mm.orthoRight = 400/2;
+    // mm.orthoTop =  400/2;
+    // mm.orthoBottom = -400/2;
+
+    // mm.rotation.y = 0;
+
+    // var xstart = 0.85,
+    //     ystart = 0.75;
+    // var width = 1-xstart,
+    //     height = 1-ystart;
+
+    // mm.viewport = new BABYLON.Viewport(0.01,0,0.195,0.18);
+	  // mm.renderingGroupId = 1;
+
+
+
   // Lighting
   const light = new BABYLON.HemisphericLight(
     "light",
@@ -86,7 +108,7 @@ export const createScene = async (engine, canvas) => {
   collisionBtn.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
   gui.addControl(collisionBtn);
 
-  const isLocalPath = false;
+  const isLocalPath = true;
   const modelNode = new BABYLON.TransformNode();
 
   BABYLON.SceneLoader.ImportMeshAsync(

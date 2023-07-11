@@ -2,14 +2,14 @@ import { createScene } from "./scene.js";
 
 var canvas = document.getElementById("renderCanvas");
 
-// const mapCanvas = document.getElementById("mapCanvas");
-// const mapContext = mapCanvas.getContext("2d");
-// mapCanvas.width = 200;  // Adjust the width and height as needed
-// mapCanvas.height = 200;
-// mapCanvas.style.position = "absolute";  // Position it relative to the parent container
-// mapCanvas.style.top = "10px";
-// mapCanvas.style.left = "10px";
-// mapCanvas.style.border = "1px solid #000";  // Optional border for visual clarity
+const mapCanvas = document.getElementById("mapCanvas");
+const mapContext = mapCanvas.getContext("2d");
+mapCanvas.width = 200;  // Adjust the width and height as needed
+mapCanvas.height = 200;
+mapCanvas.style.position = "absolute";  // Position it relative to the parent container
+mapCanvas.style.top = "10px";
+mapCanvas.style.left = "10px";
+mapCanvas.style.border = "1px solid #000";  // Optional border for visual clarity
 
 function updateUserPosition(x, y) {
   // Clear the previous user position
@@ -30,7 +30,7 @@ var startRenderLoop = function (engine, canvas) {
   engine.runRenderLoop(function () {
     if (sceneToRender && sceneToRender.activeCamera) {
       sceneToRender.render();
-      // updateUserPosition(sceneToRender.activeCamera.position.z,sceneToRender.activeCamera.position.x);
+      updateUserPosition(sceneToRender.activeCamera.position.z,sceneToRender.activeCamera.position.x);
     }
     fps.innerHTML = engine.getFps().toFixed() + " fps";
   });
