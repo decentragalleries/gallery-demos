@@ -1,4 +1,4 @@
-export const createScene = async (engine, canvas) => {
+global.createScene = async (engine, canvas) => {
   const scene = new BABYLON.Scene(engine);
 
   // Enable physics engine for object gravity and collision
@@ -70,7 +70,7 @@ export const createScene = async (engine, canvas) => {
 
   var skyMaterial = new BABYLON.StandardMaterial("skyMaterial", scene);
   skyMaterial.emissiveTexture = new BABYLON.Texture(
-    "../../assets/industrial_sunset_puresky_4k.hdr",
+    "/assets/images/skybox.hdr",
     scene
   );
   skyMaterial.emissiveTexture.level = 0.5;

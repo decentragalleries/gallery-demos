@@ -1,3 +1,5 @@
 node_modules/
-*/models/
 https-keys/
+dist/
+public/*
+!public/index.html

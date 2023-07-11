@@ -1,4 +1,4 @@
-export const createScene = async (engine, canvas) => {
+global.createScene = async (engine, canvas) => {
   const scene = new BABYLON.Scene(engine);
 
   // Enable physics engine for object gravity and collision
@@ -83,15 +83,23 @@ export const createScene = async (engine, canvas) => {
   collisionBtn.paddingBottom = "10px";
   collisionBtn.horizontalAlignment =
     BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-  collisionBtn.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+  collisionBtn.verticalAlignment =
+    BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
   gui.addControl(collisionBtn);
 
-  const isLocalPath = false;
+  const isLocalPath = true;
   const modelNode = new BABYLON.TransformNode();
+
+  const loadingDiv = document.createElement("div");
+  loadingDiv.setAttribute("id", "loading");
+  loadingDiv.innerHTML = "3D models are loading...";
+  document.body.appendChild(loadingDiv);
 
   BABYLON.SceneLoader.ImportMeshAsync(
     "",
-    isLocalPath ? "../../models/baked-lights/" : "https://gateway.pinata.cloud/ipfs/QmZhmR5yYZr2CYX3vudAng6MTgLMdukGghmbh3v1X4h6JR/",
+    isLocalPath
+      ? "/models/baked-lights/"
+      : "https://gateway.pinata.cloud/ipfs/QmZhmR5yYZr2CYX3vudAng6MTgLMdukGghmbh3v1X4h6JR/",
     "baked-lights.glb"
   ).then((result) => {
     result.meshes.forEach((mesh) => {
@@ -106,7 +114,7 @@ export const createScene = async (engine, canvas) => {
     modelNode.scaling.y = 10;
     modelNode.scaling.z = 10;
 
-    document.getElementById("loading").style.display = "none";
+    loadingDiv.style.display = "none";
   });
 
   return scene;

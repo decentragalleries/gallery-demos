@@ -1,12 +1,12 @@
-import { importDemoModels } from "../../components/demo-models-import.js";
+import { HemiSphericLight } from "babylonjs-samples";
 
-export const createScene = async (engine, canvas) => {
+global.createScene = async (engine, canvas) => {
   const scene = new BABYLON.Scene(engine);
 
   // Enable physics engine for object gravity and collision
   globalThis.HK = await HavokPhysics();
   var hk = new BABYLON.HavokPlugin();
-  const physicsGravity = new BABYLON.Vector3(0, 0, 0);
+  const physicsGravity = new BABYLON.Vector3(0, -9.81, 0);
   scene.enablePhysics(physicsGravity, hk);
 
   // Enable camera gravity
@@ -21,14 +21,13 @@ export const createScene = async (engine, canvas) => {
   // Camera
   const camera = new BABYLON.FreeCamera(
     "FreeCamera",
-    new BABYLON.Vector3(0, 14, 0),
+    new BABYLON.Vector3(0, 1, 0),
     scene
   );
-  camera.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  camera.speed = 0.7;
-  camera.ellipsoid = new BABYLON.Vector3(2, 7, 2);
+  camera.speed = 0.3;
   camera.applyGravity = true;
   camera.checkCollisions = true;
+  camera.ellipsoid = new BABYLON.Vector3(1, 0.5, 1);
   camera._needMoveForGravity = true;
   camera.attachControl(canvas, true);
 
@@ -39,15 +38,13 @@ export const createScene = async (engine, canvas) => {
   camera.keysDown.push(83);
 
   // Lighting
-  const light = new BABYLON.HemisphericLight(
-    "light",
-    new BABYLON.Vector3(1, 1, 0)
-  );
+  var light = HemiSphericLight(scene);
 
   // Ground
-  const ground = BABYLON.Mesh.CreatePlane("ground", 10000.0, scene);
+  var ground = BABYLON.Mesh.CreatePlane("ground", 10000.0, scene);
   ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
   ground.checkCollisions = true;
+  ground.receiveShadows = true;
   ground.position = new BABYLON.Vector3(0, -0.02, 0);
   const groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
   groundMaterial.alpha = 1;
@@ -63,6 +60,5 @@ export const createScene = async (engine, canvas) => {
   // Enable for scene debugger:
   // scene.debugLayer.show();
 
-  importDemoModels(scene, camera);
   return scene;
 };

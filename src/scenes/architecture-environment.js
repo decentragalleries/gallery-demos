@@ -1,4 +1,4 @@
-export const createScene = async (engine, canvas) => {
+global.createScene = async (engine, canvas) => {
   const scene = new BABYLON.Scene(engine);
 
   // Enable physics engine for object gravity and collision

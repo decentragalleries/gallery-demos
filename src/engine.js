@@ -1,5 +1,3 @@
-import { createScene } from "./scene.js";
-
 var canvas = document.getElementById("renderCanvas");
 
 var startRenderLoop = function (engine, canvas) {
