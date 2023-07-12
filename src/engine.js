@@ -1,50 +1,32 @@
-var canvas = document.getElementById("renderCanvas");
+import "@babylonjs/loaders";
+import "@babylonjs/inspector";
+import { Engine, EngineStore, Scene } from "@babylonjs/core";
+import HavokPhysics from "@babylonjs/havok";
 
-var startRenderLoop = function (engine, canvas) {
-  const fpsDiv = document.getElementById("fps");
-  engine.runRenderLoop(function () {
-    if (sceneToRender && sceneToRender.activeCamera) {
-      sceneToRender.render();
-    }
-    fps.innerHTML = engine.getFps().toFixed() + " fps";
-  });
-};
+const canvas = document.getElementById("renderCanvas");
+const fpsDiv = document.getElementById("fps");
 
-var engine;
-var scene;
-var sceneToRender;
-var createDefaultEngine = function () {
-  return new BABYLON.Engine(canvas, true, {
-    preserveDrawingBuffer: true,
-    stencil: true,
-    disableWebGL2Support: false,
-  });
-};
-
-window.initFunction = async function () {
-  var asyncEngineCreation = async function () {
-    try {
-      return createDefaultEngine();
-    } catch (e) {
-      console.log(
-        "the available createEngine function failed. Creating the default engine instead"
-      );
-      return createDefaultEngine();
-    }
-  };
-  engine = await asyncEngineCreation();
-  window.engine = engine;
-  if (!engine) throw "engine should not be null.";
-  startRenderLoop(engine, canvas);
-  scene = await createScene(engine, canvas);
-  window.scene = scene;
-};
-
-initFunction().then(() => {
-  sceneToRender = scene;
+const engine = new Engine(canvas, true, {
+  preserveDrawingBuffer: true,
+  stencil: true,
+  disableWebGL2Support: false,
 });
+const scene = new Scene(engine);
 
-// Resize
+EngineStore.Instances.push(engine);
+EngineStore._LastCreatedScene = scene;
+
 window.addEventListener("resize", function () {
   engine.resize();
 });
+
+globalThis.HK = await HavokPhysics();
+
+const startRenderLoop = () => {
+  engine.runRenderLoop(() => {
+    scene.render();
+    fpsDiv.innerHTML = engine.getFps().toFixed() + " fps";
+  });
+};
+
+export { scene, canvas, engine, startRenderLoop };

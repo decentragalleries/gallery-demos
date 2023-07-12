@@ -15,5 +15,12 @@
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "@babylonjs/core": "^6.11.2",
+    "@babylonjs/gui": "^6.11.2",
+    "@babylonjs/havok": "^1.1.0",
+    "@babylonjs/inspector": "^6.11.2",
+    "@babylonjs/loaders": "^6.11.2"
   }
 }

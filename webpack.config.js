@@ -11,6 +11,7 @@ const scenes = [
 
 module.exports = {
   entry: {
+    engine: path.join(path.resolve() + "/src/engine.js"),
     ...scenes.reduce(
       (a, c) => ({
         ...a,
@@ -18,7 +19,6 @@ module.exports = {
       }),
       {}
     ),
-    engine: path.join(path.resolve() + "/src/engine.js"),
   },
   output: {
     filename: "[name].bundle.js", //name for the js file that is created/compiled in memory
@@ -41,7 +41,7 @@ module.exports = {
       new HtmlWebpackPlugin({
         template: path.join(path.resolve() + "/public/index.html"),
         filename: `${scene}.html`,
-        chunks: [scene, "engine"],
+        chunks: ["engine", scene],
       })
   ),
   mode: "development",

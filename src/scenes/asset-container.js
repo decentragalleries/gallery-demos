@@ -1,11 +1,37 @@
-const isLocalPath = false;
+import { scene, canvas, engine, startRenderLoop } from "../engine";
+import {
+  HavokPlugin,
+  Vector3,
+  FreeCamera,
+  Mesh,
+  StandardMaterial,
+  Color3,
+  PhysicsAggregate,
+  PhysicsShapeType,
+  HemisphericLight,
+  TransformNode,
+  SceneLoader,
+  AssetContainer,
+} from "@babylonjs/core";
+import {
+  AdvancedDynamicTexture,
+  Button,
+  Control,
+  StackPanel,
+} from "@babylonjs/gui";
+
+const isLocalPath = true;
 const count = 5;
 
 const loading = Array.from(Array(count), (el) => true);
 const UI_HEIGHT_PERC = 0.3;
 var index = 0;
 var stackPanel = null;
-var camera = null;
+
+const loadingDiv = document.createElement("div");
+loadingDiv.setAttribute("id", "loading");
+loadingDiv.innerHTML = "3D models are loading...";
+document.body.appendChild(loadingDiv);
 
 const importDemoModel = (
   btnName,
@@ -21,14 +47,9 @@ const importDemoModel = (
   const localIndex = index;
   if (isTeleportable) index++;
 
-  const modelNode = new BABYLON.TransformNode();
+  const modelNode = new TransformNode();
 
-  const loadingDiv = document.createElement("div");
-  loadingDiv.setAttribute("id", "loading");
-  loadingDiv.innerHTML = "3D models are loading...";
-  document.body.appendChild(loadingDiv);
-
-  BABYLON.SceneLoader.ImportMeshAsync(
+  SceneLoader.ImportMeshAsync(
     "",
     isLocalPath ? `/models/${localPath}` : remotePath,
     fileName
@@ -48,11 +69,7 @@ const importDemoModel = (
     modelNode.scaling.x = 10;
     modelNode.scaling.y = 10;
     modelNode.scaling.z = 10;
-    modelNode.position = new BABYLON.Vector3(
-      position[0],
-      position[1],
-      position[2]
-    );
+    modelNode.position = new Vector3(position[0], position[1], position[2]);
 
     if (isTeleportable) {
       loading[localIndex] = false;
@@ -61,18 +78,14 @@ const importDemoModel = (
   });
 
   if (isTeleportable && stackPanel) {
-    const roomBtn = BABYLON.GUI.Button.CreateSimpleButton(
+    const roomBtn = Button.CreateSimpleButton(
       `roomBtn${localIndex + 1}`,
       btnName
     );
     roomBtn.color = "white";
     roomBtn.background = "rgba(0, 100, 170)";
     roomBtn.onPointerUpObservable.add(() => {
-      camera.position = new BABYLON.Vector3(
-        cameraPos[0],
-        cameraPos[1],
-        cameraPos[2]
-      );
+      camera.position = new Vector3(cameraPos[0], cameraPos[1], cameraPos[2]);
       camera.maxZ = cameraMaxZ;
     });
     roomBtn.hoverCursor = "pointer";
@@ -86,18 +99,21 @@ const importDemoModel = (
 };
 
 const setupStackPanel = () => {
-  const gui = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+  const gui = AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
-  const stackPanel = new BABYLON.GUI.StackPanel();
+  window.addEventListener("resize", () => {
+    gui.scaleTo(engine.getRenderWidth(), engine.getRenderHeight());
+  });
+
+  const stackPanel = new StackPanel();
   stackPanel.height = UI_HEIGHT_PERC;
   stackPanel.width = 0.15;
   stackPanel.paddingRight = "10px";
-  stackPanel.horizontalAlignment =
-    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-  stackPanel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+  stackPanel.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
+  stackPanel.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
   gui.addControl(stackPanel);
 
-  const collisionBtn = BABYLON.GUI.Button.CreateSimpleButton(
+  const collisionBtn = Button.CreateSimpleButton(
     "collisionBtn",
     "Disable Collision"
   );
@@ -120,21 +136,11 @@ const setupStackPanel = () => {
   return stackPanel;
 };
 
-const importDemoModels = (scene, localCamera, container = null) => {
-  camera = localCamera;
+const importDemoModels = (container = null) => {
   camera.speed = 1.5;
   camera.maxZ = 150;
-  camera.position = new BABYLON.Vector3(-26, 14, -15);
+  camera.position = new Vector3(-26, 14, -15);
   stackPanel = setupStackPanel();
-
-  // Log camera position
-  // var oldCameraX = camera.position.x;
-  // scene.registerBeforeRender(() => {
-  //   if (camera.position.x !== oldCameraX) {
-  //     console.log(camera.position)
-  //     oldCameraX = camera.position.x;
-  //   }
-  // });
 
   importDemoModel(
     "Room 1",
@@ -265,82 +271,62 @@ const importDemoModels = (scene, localCamera, container = null) => {
   );
 };
 
-global.createScene = async (engine, canvas) => {
-  const scene = new BABYLON.Scene(engine);
-  var container = new BABYLON.AssetContainer(scene);
+var container = new AssetContainer(scene);
 
-  // Enable physics engine for object gravity and collision
-  globalThis.HK = await HavokPhysics();
-  var hk = new BABYLON.HavokPlugin();
-  const physicsGravity = new BABYLON.Vector3(0, 0, 0);
-  scene.enablePhysics(physicsGravity, hk);
+// Enable physics engine for object gravity and collision
+var hk = new HavokPlugin();
+const physicsGravity = new Vector3(0, 0, 0);
+scene.enablePhysics(physicsGravity, hk);
 
-  // Enable camera gravity
-  const assumedFramesPerSecond = 10;
-  const earthGravity = -9.81;
-  scene.gravity = new BABYLON.Vector3(
-    0,
-    earthGravity / assumedFramesPerSecond,
-    0
-  );
+// Enable camera gravity
+const assumedFramesPerSecond = 10;
+const earthGravity = -9.81;
+scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0);
 
-  // Camera
-  const camera = new BABYLON.FreeCamera(
-    "FreeCamera",
-    new BABYLON.Vector3(0, 14, 0),
-    scene
-  );
-  camera.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  camera.speed = 0.7;
-  camera.ellipsoid = new BABYLON.Vector3(2, 7, 2);
-  camera.applyGravity = true;
-  camera.checkCollisions = true;
-  camera._needMoveForGravity = true;
-  camera.attachControl(canvas, true);
+// Camera
+const camera = new FreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
+camera.rotation = new Vector3(0, Math.PI / 2, 0);
+camera.speed = 0.7;
+camera.ellipsoid = new Vector3(2, 7, 2);
+camera.applyGravity = true;
+camera.checkCollisions = true;
+camera._needMoveForGravity = true;
+camera.attachControl(canvas, true);
 
-  // WASD
-  camera.keysUp.push(87);
-  camera.keysLeft.push(65);
-  camera.keysRight.push(68);
-  camera.keysDown.push(83);
+// WASD
+camera.keysUp.push(87);
+camera.keysLeft.push(65);
+camera.keysRight.push(68);
+camera.keysDown.push(83);
 
-  // Lighting
-  const light = new BABYLON.HemisphericLight(
-    "light",
-    new BABYLON.Vector3(1, 1, 0)
-  );
+// Lighting
+const light = new HemisphericLight("light", new Vector3(1, 1, 0));
 
-  // Ground
-  const ground = BABYLON.Mesh.CreatePlane("ground", 10000.0, scene);
-  ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-  ground.checkCollisions = true;
-  ground.position = new BABYLON.Vector3(0, -0.02, 0);
-  const groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
-  groundMaterial.alpha = 1;
-  groundMaterial.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
-  ground.material = groundMaterial;
-  new BABYLON.PhysicsAggregate(
-    ground,
-    BABYLON.PhysicsShapeType.BOX,
-    { mass: 0 },
-    scene
-  );
+// Ground
+const ground = Mesh.CreatePlane("ground", 10000.0, scene);
+ground.rotation = new Vector3(Math.PI / 2, 0, 0);
+ground.checkCollisions = true;
+ground.position = new Vector3(0, -0.02, 0);
+const groundMaterial = new StandardMaterial("groundMaterial", scene);
+groundMaterial.alpha = 1;
+groundMaterial.diffuseColor = new Color3(0.8, 0.8, 0.8);
+ground.material = groundMaterial;
+new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
 
-  container.meshes.push(ground);
+container.meshes.push(ground);
 
-  // Enable for scene debugger:
-  // scene.debugLayer.show();
+// Enable for scene debugger:
+// scene.debugLayer.show();
 
-  importDemoModels(scene, camera, container);
+importDemoModels(container);
 
-  var toggle = 0;
-  document.onkeydown = () => {
-    if (toggle++ % 2 == 0) {
-      container.removeAllFromScene();
-    } else {
-      container.addAllToScene();
-    }
-  };
-
-  return scene;
+var toggle = 0;
+document.onkeydown = () => {
+  if (toggle++ % 2 == 0) {
+    container.removeAllFromScene();
+  } else {
+    container.addAllToScene();
+  }
 };
+
+startRenderLoop();

@@ -1,121 +1,118 @@
-global.createScene = async (engine, canvas) => {
-  const scene = new BABYLON.Scene(engine);
+import { scene, canvas, engine, startRenderLoop } from "../engine";
+import {
+  HavokPlugin,
+  Vector3,
+  FreeCamera,
+  Mesh,
+  StandardMaterial,
+  Color3,
+  PhysicsAggregate,
+  PhysicsShapeType,
+  HemisphericLight,
+  TransformNode,
+  SceneLoader,
+} from "@babylonjs/core";
+import { AdvancedDynamicTexture, Button, Control } from "@babylonjs/gui";
 
-  // Enable physics engine for object gravity and collision
-  globalThis.HK = await HavokPhysics();
-  var hk = new BABYLON.HavokPlugin();
-  const physicsGravity = new BABYLON.Vector3(0, 0, 0);
-  scene.enablePhysics(physicsGravity, hk);
+// Enable physics engine for object gravity and collision
+var hk = new HavokPlugin();
+const physicsGravity = new Vector3(0, 0, 0);
+scene.enablePhysics(physicsGravity, hk);
 
-  // Enable camera gravity
-  const assumedFramesPerSecond = 10;
-  const earthGravity = -9.81;
-  scene.gravity = new BABYLON.Vector3(
-    0,
-    earthGravity / assumedFramesPerSecond,
-    0
-  );
+// Enable camera gravity
+const assumedFramesPerSecond = 10;
+const earthGravity = -9.81;
+scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0);
 
-  // Camera
-  const camera = new BABYLON.FreeCamera(
-    "FreeCamera",
-    new BABYLON.Vector3(0, 14, 0),
-    scene
-  );
-  camera.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  camera.speed = 1.5;
-  camera.ellipsoid = new BABYLON.Vector3(2, 7, 2);
-  camera.applyGravity = true;
-  camera.checkCollisions = true;
-  camera._needMoveForGravity = true;
-  camera.attachControl(canvas, true);
+// Camera
+const camera = new FreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
+camera.rotation = new Vector3(0, Math.PI / 2, 0);
+camera.speed = 1.5;
+camera.ellipsoid = new Vector3(2, 7, 2);
+camera.applyGravity = true;
+camera.checkCollisions = true;
+camera._needMoveForGravity = true;
+camera.attachControl(canvas, true);
 
-  // WASD
-  camera.keysUp.push(87);
-  camera.keysLeft.push(65);
-  camera.keysRight.push(68);
-  camera.keysDown.push(83);
+// WASD
+camera.keysUp.push(87);
+camera.keysLeft.push(65);
+camera.keysRight.push(68);
+camera.keysDown.push(83);
 
-  // Lighting
-  const light = new BABYLON.HemisphericLight(
-    "light",
-    new BABYLON.Vector3(1, 1, 0)
-  );
+// Lighting
+const light = new HemisphericLight("light", new Vector3(1, 1, 0));
 
-  // Ground
-  const ground = BABYLON.Mesh.CreatePlane("ground", 10000.0, scene);
-  ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-  ground.checkCollisions = true;
-  ground.position = new BABYLON.Vector3(0, -0.02, 0);
-  const groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
-  groundMaterial.alpha = 1;
-  groundMaterial.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);
-  ground.material = groundMaterial;
-  new BABYLON.PhysicsAggregate(
-    ground,
-    BABYLON.PhysicsShapeType.BOX,
-    { mass: 0 },
-    scene
-  );
+// Ground
+const ground = Mesh.CreatePlane("ground", 10000.0, scene);
+ground.rotation = new Vector3(Math.PI / 2, 0, 0);
+ground.checkCollisions = true;
+ground.position = new Vector3(0, -0.02, 0);
+const groundMaterial = new StandardMaterial("groundMaterial", scene);
+groundMaterial.alpha = 1;
+groundMaterial.diffuseColor = new Color3(0.8, 0.8, 0.8);
+ground.material = groundMaterial;
+new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
 
-  // Enable for scene debugger:
-  // scene.debugLayer.show();
+// Enable for scene debugger:
+// scene.debugLayer.show();
 
-  const gui = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+const gui = AdvancedDynamicTexture.CreateFullscreenUI("UI", undefined, scene);
 
-  const collisionBtn = BABYLON.GUI.Button.CreateSimpleButton(
-    "collisionBtn",
-    "Disable Collision"
-  );
-  collisionBtn.color = "white";
-  collisionBtn.background = "rgba(0, 100, 170)";
-  collisionBtn.onPointerUpObservable.add(() => {
-    collisionBtn.textBlock.text = camera.checkCollisions
-      ? "Enable Collision"
-      : "Disable Collision";
-    camera.checkCollisions = !camera.checkCollisions;
-  });
-  collisionBtn.hoverCursor = "pointer";
-  collisionBtn.thickness = 0;
-  collisionBtn.height = `${0.07 * window.innerHeight}px`;
-  collisionBtn.width = 0.15;
-  collisionBtn.paddingRight = "10px";
-  collisionBtn.paddingBottom = "10px";
-  collisionBtn.horizontalAlignment =
-    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-  collisionBtn.verticalAlignment =
-    BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
-  gui.addControl(collisionBtn);
+window.addEventListener("resize", () => {
+  gui.scaleTo(engine.getRenderWidth(), engine.getRenderHeight());
+});
 
-  const isLocalPath = true;
-  const modelNode = new BABYLON.TransformNode();
+const collisionBtn = Button.CreateSimpleButton(
+  "collisionBtn",
+  "Disable Collision"
+);
+collisionBtn.color = "white";
+collisionBtn.background = "rgba(0, 100, 170)";
+collisionBtn.onPointerUpObservable.add(() => {
+  collisionBtn.textBlock.text = camera.checkCollisions
+    ? "Enable Collision"
+    : "Disable Collision";
+  camera.checkCollisions = !camera.checkCollisions;
+});
+collisionBtn.hoverCursor = "pointer";
+collisionBtn.thickness = 0;
+collisionBtn.height = `${0.07 * window.innerHeight}px`;
+collisionBtn.width = 0.15;
+collisionBtn.paddingRight = "10px";
+collisionBtn.paddingBottom = "10px";
+collisionBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
+collisionBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
+gui.addControl(collisionBtn);
 
-  const loadingDiv = document.createElement("div");
-  loadingDiv.setAttribute("id", "loading");
-  loadingDiv.innerHTML = "3D models are loading...";
-  document.body.appendChild(loadingDiv);
+const isLocalPath = true;
+const modelNode = new TransformNode();
 
-  BABYLON.SceneLoader.ImportMeshAsync(
-    "",
-    isLocalPath
-      ? "/models/baked-lights/"
-      : "https://gateway.pinata.cloud/ipfs/QmZhmR5yYZr2CYX3vudAng6MTgLMdukGghmbh3v1X4h6JR/",
-    "baked-lights.glb"
-  ).then((result) => {
-    result.meshes.forEach((mesh) => {
-      mesh.checkCollisions = true;
+const loadingDiv = document.createElement("div");
+loadingDiv.setAttribute("id", "loading");
+loadingDiv.innerHTML = "3D models are loading...";
+document.body.appendChild(loadingDiv);
 
-      if (!mesh.parent) {
-        mesh.parent = modelNode;
-      }
-    });
+SceneLoader.ImportMeshAsync(
+  "",
+  isLocalPath
+    ? "/models/baked-lights/"
+    : "https://gateway.pinata.cloud/ipfs/QmZhmR5yYZr2CYX3vudAng6MTgLMdukGghmbh3v1X4h6JR/",
+  "baked-lights.glb"
+).then((result) => {
+  result.meshes.forEach((mesh) => {
+    mesh.checkCollisions = true;
 
-    modelNode.scaling.x = 10;
-    modelNode.scaling.y = 10;
-    modelNode.scaling.z = 10;
-
-    loadingDiv.style.display = "none";
+    if (!mesh.parent) {
+      mesh.parent = modelNode;
+    }
   });
 
-  return scene;
-};
+  modelNode.scaling.x = 10;
+  modelNode.scaling.y = 10;
+  modelNode.scaling.z = 10;
+
+  loadingDiv.style.display = "none";
+});
+
+startRenderLoop();
