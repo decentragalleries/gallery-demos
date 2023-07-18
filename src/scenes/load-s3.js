@@ -14,7 +14,7 @@ import {
   MeshBuilder,
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture, Button, Control } from "@babylonjs/gui";
-import {downloadModel} from 'babylonjs-samples'
+import {downloadModel,getGLBNamesFromYAML} from 'babylonjs-samples'
 
 // Enable physics engine for object gravity and collision
 var hk = new HavokPlugin();
@@ -97,75 +97,81 @@ document.body.appendChild(loadingDiv);
 
 var allChildMeshes = [];
 
-const glbbase64String = await downloadModel("classic gallery","frame-type1.glb")
+const names = await getGLBNamesFromYAML("classic gallery")
+console.log(names);
 
-SceneLoader.ImportMeshAsync(
-  "", 
-  "", 
-  "data:application/octet-stream;base64," + glbbase64String, 
-  scene
-).then((result) => {
-  result.transformNodes.forEach((node) => {
-    if (
-      node.getChildMeshes().length === node.getChildren().length &&
-      node.getChildren().length > 0
-    ) {
-      const childMeshes = node.getChildMeshes();
+for (const name of names) {
 
-      allChildMeshes.push(...childMeshes);
+    var glbbase64String = await downloadModel(name);
+    var glbDataUrl = "data:application/octet-stream;base64," + glbbase64String;
 
-      // Create a parent mesh to encapsulate the child meshes
-      var mesh = Mesh.MergeMeshes(
-        childMeshes,
-        true,
-        true,
-        undefined,
-        false,
-        true
-      );
-      mesh.scaling.x = 10;
-      mesh.scaling.y = 10;
-      mesh.scaling.z = 10;
-      mesh.showBoundingBox = true;
+    SceneLoader.ImportMeshAsync(
+    "", 
+    "", 
+    glbDataUrl, 
+    scene
+    ).then((result) => {
+    result.transformNodes.forEach((node) => {
+        if (
+        node.getChildMeshes().length === node.getChildren().length &&
+        node.getChildren().length > 0
+        ) {
+        const childMeshes = node.getChildMeshes();
 
-      const boundingBox = mesh.getBoundingInfo().boundingBox;
-      const invisibleBox = MeshBuilder.CreateBox("box", {
-        height:
-          (boundingBox.maximumWorld.y - boundingBox.minimumWorld.y) * 10,
-        width: (boundingBox.maximumWorld.x - boundingBox.minimumWorld.x) * 10,
-        depth: (boundingBox.maximumWorld.z - boundingBox.minimumWorld.z) * 10,
-      });
-      invisibleBox.position = boundingBox.centerWorld;
-      invisibleBox.isVisible = false;
-      invisibleBox.checkCollisions = true;
-    }
-  });
+        allChildMeshes.push(...childMeshes);
 
-  result.meshes.forEach((mesh) => {
-    if (!mesh.parent) {
-      mesh.parent = modelNode;
-    }
-    mesh.showBoundingBox = true;
+        // Create a parent mesh to encapsulate the child meshes
+        var mesh = Mesh.MergeMeshes(
+            childMeshes,
+            true,
+            true,
+            undefined,
+            false,
+            true
+        );
+        mesh.scaling.x = 10;
+        mesh.scaling.y = 10;
+        mesh.scaling.z = 10;
+        mesh.showBoundingBox = true;
 
-    if (!allChildMeshes.includes(mesh)) {
-      const boundingBox = mesh.getBoundingInfo().boundingBox;
-      const invisibleBox = MeshBuilder.CreateBox("box", {
-        height:
-          (boundingBox.maximumWorld.y - boundingBox.minimumWorld.y) * 10,
-        width: (boundingBox.maximumWorld.x - boundingBox.minimumWorld.x) * 10,
-        depth: (boundingBox.maximumWorld.z - boundingBox.minimumWorld.z) * 10,
-      });
-      invisibleBox.position = boundingBox.centerWorld;
-      invisibleBox.isVisible = false;
-      invisibleBox.checkCollisions = true;
-    }
-  });
+        const boundingBox = mesh.getBoundingInfo().boundingBox;
+        const invisibleBox = MeshBuilder.CreateBox("box", {
+            height:
+            (boundingBox.maximumWorld.y - boundingBox.minimumWorld.y) * 10,
+            width: (boundingBox.maximumWorld.x - boundingBox.minimumWorld.x) * 10,
+            depth: (boundingBox.maximumWorld.z - boundingBox.minimumWorld.z) * 10,
+        });
+        invisibleBox.position = boundingBox.centerWorld;
+        invisibleBox.isVisible = false;
+        invisibleBox.checkCollisions = true;
+        }
+    });
 
-  modelNode.scaling.x = 10;
-  modelNode.scaling.y = 10;
-  modelNode.scaling.z = 10;
+    result.meshes.forEach((mesh) => {
+        if (!mesh.parent) {
+        mesh.parent = modelNode;
+        }
+        mesh.showBoundingBox = true;
 
-  loadingDiv.style.display = "none";
-});
+        if (!allChildMeshes.includes(mesh)) {
+        const boundingBox = mesh.getBoundingInfo().boundingBox;
+        const invisibleBox = MeshBuilder.CreateBox("box", {
+            height:
+            (boundingBox.maximumWorld.y - boundingBox.minimumWorld.y) * 10,
+            width: (boundingBox.maximumWorld.x - boundingBox.minimumWorld.x) * 10,
+            depth: (boundingBox.maximumWorld.z - boundingBox.minimumWorld.z) * 10,
+        });
+        invisibleBox.position = boundingBox.centerWorld;
+        invisibleBox.isVisible = false;
+        invisibleBox.checkCollisions = true;
+        }
+    });
 
+    modelNode.scaling.x = 10;
+    modelNode.scaling.y = 10;
+    modelNode.scaling.z = 10;
+
+    loadingDiv.style.display = "none";
+    });
+}
 startRenderLoop();
