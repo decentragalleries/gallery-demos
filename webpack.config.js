@@ -6,6 +6,7 @@ const scenes = [
   "architecture-environment",
   "asset-container",
   "baked-lights",
+  "moving-object-shadows",
   "testing",
 ];
 

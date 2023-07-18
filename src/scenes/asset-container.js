@@ -20,7 +20,7 @@ import {
   StackPanel,
 } from "@babylonjs/gui";
 
-const isLocalPath = true;
+const isLocalPath = false;
 const count = 5;
 
 const loading = Array.from(Array(count), (el) => true);

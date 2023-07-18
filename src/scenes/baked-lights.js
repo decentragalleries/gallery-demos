@@ -86,7 +86,7 @@ collisionBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
 collisionBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
 gui.addControl(collisionBtn);
 
-const isLocalPath = true;
+const isLocalPath = false;
 const modelNode = new TransformNode();
 
 const loadingDiv = document.createElement("div");
