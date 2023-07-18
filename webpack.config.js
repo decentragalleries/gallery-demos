@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 
 const scenes = [
   "architecture-environment",
@@ -36,13 +37,18 @@ module.exports = {
       publicPath: "/",
     },
   },
-  plugins: scenes.map(
-    (scene) =>
-      new HtmlWebpackPlugin({
-        template: path.join(path.resolve() + "/public/index.html"),
-        filename: `${scene}.html`,
-        chunks: ["engine", scene],
-      })
-  ),
+  plugins: [
+    ...scenes.map(
+      (scene) =>
+        new HtmlWebpackPlugin({
+          template: path.join(path.resolve() + "/public/index.html"),
+          filename: `${scene}.html`,
+          chunks: ["engine", scene],
+        })
+    ),
+    new Dotenv({
+      path: './.env.local'
+    }),
+  ],
   mode: "development",
 };

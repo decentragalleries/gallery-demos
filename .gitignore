@@ -1,5 +1,14 @@
 node_modules/
+
+# HTTPS Keys
 https-keys/
+
+# Webpack built files
 dist/
+
+# Local models and assets
 public/*
 !public/index.html
+
+# Environment variables
+.env.local
