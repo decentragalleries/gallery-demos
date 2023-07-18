@@ -3,6 +3,7 @@ import "@babylonjs/inspector";
 import "@babylonjs/gui";
 import { Engine, EngineStore, Scene } from "@babylonjs/core";
 import HavokPhysics from "@babylonjs/havok";
+import { initComponents } from "babylonjs-samples";
 
 const canvas = document.getElementById("renderCanvas");
 const fpsDiv = document.getElementById("fps");
@@ -16,6 +17,8 @@ const scene = new Scene(engine);
 
 EngineStore.Instances.push(engine);
 EngineStore._LastCreatedScene = scene;
+
+initComponents(engine, scene);
 
 window.addEventListener("resize", function () {
   engine.resize();

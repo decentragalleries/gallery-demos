@@ -6,7 +6,6 @@ const scenes = [
   "architecture-environment",
   "asset-container",
   "baked-lights",
-  "skybox",
   "testing",
 ];
 
@@ -30,6 +29,14 @@ module.exports = {
   },
   resolve: {
     extensions: [".js"],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(png|svg|jpg|jpeg|gif|ogg|mp3|wav)$/i,
+        use: [{ loader: "file-loader" }],
+      },
+    ],
   },
   devServer: {
     host: "0.0.0.0",
