@@ -16,7 +16,10 @@ module.exports = {
     ...scenes.reduce(
       (a, c) => ({
         ...a,
-        [c]: path.join(path.resolve() + `/src/scenes/${c}.js`),
+        [c]: {
+          import: path.join(path.resolve() + `/src/scenes/${c}.js`),
+          dependOn: "engine",
+        },
       }),
       {}
     ),
@@ -47,7 +50,7 @@ module.exports = {
         })
     ),
     new Dotenv({
-      path: './.env.local'
+      path: "./.env.local",
     }),
   ],
   mode: "development",

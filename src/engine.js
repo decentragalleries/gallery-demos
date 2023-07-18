@@ -1,5 +1,6 @@
 import "@babylonjs/loaders";
 import "@babylonjs/inspector";
+import "@babylonjs/gui";
 import { Engine, EngineStore, Scene } from "@babylonjs/core";
 import HavokPhysics from "@babylonjs/havok";
 
