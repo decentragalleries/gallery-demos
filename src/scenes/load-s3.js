@@ -122,8 +122,7 @@ console.log(names);
 
 for (const name of names) {
 
-    var glbbase64String = await downloadModel(name);
-    var glbDataUrl = "data:application/octet-stream;base64," + glbbase64String;
+    var glbDataUrl = await downloadModel(name);
 
     SceneLoader.ImportMeshAsync(
     "", 
