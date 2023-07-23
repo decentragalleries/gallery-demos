@@ -12,9 +12,10 @@ import {
   TransformNode,
   SceneLoader,
   MeshBuilder,
+  Sound
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture, Button, Control } from "@babylonjs/gui";
-import {downloadModel,getGLBNamesFromYAML} from 'babylonjs-samples'
+import {downloadModel,getGLBNamesFromYAML,getMusic} from 'babylonjs-samples'
 
 // Enable physics engine for object gravity and collision
 var hk = new HavokPlugin();
@@ -41,6 +42,25 @@ camera.keysUp.push(87);
 camera.keysLeft.push(65);
 camera.keysRight.push(68);
 camera.keysDown.push(83);
+
+const audioData = await getMusic(scene,"violon.mp3");
+
+const music = new Sound(
+    "Violons",
+    audioData,
+    scene,
+    function () {
+      music.play();
+    },
+    {
+      spatialSound: true,
+      distanceModel: "exponential",
+      rolloffFactor: 1,
+      loop: true,
+      autoplay: true,
+    }
+   );
+
 
 // Lighting
 const light = new HemisphericLight("light", new Vector3(1, 1, 0));
