@@ -1,5 +1,5 @@
 import { scene, canvas, startRenderLoop } from "../engine";
-import { HemiSphericLight } from "babylonjs-samples";
+import { HemiSphericLight, addFreeCamera } from "babylonjs-samples";
 import {
   HavokPlugin,
   Vector3,
@@ -21,19 +21,8 @@ const earthGravity = -9.81;
 scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0);
 
 // Camera
-const camera = new FreeCamera("FreeCamera", new Vector3(0, 1, 0), scene);
-camera.speed = 0.3;
-camera.applyGravity = true;
-camera.checkCollisions = true;
-camera.ellipsoid = new Vector3(1, 0.5, 1);
-camera._needMoveForGravity = true;
+const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
 camera.attachControl(canvas, true);
-
-// WASD
-camera.keysUp.push(87);
-camera.keysLeft.push(65);
-camera.keysRight.push(68);
-camera.keysDown.push(83);
 
 // Lighting
 var light = HemiSphericLight(scene);

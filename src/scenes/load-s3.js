@@ -15,7 +15,7 @@ import {
   Sound
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture, Button, Control } from "@babylonjs/gui";
-import {downloadModel,getGLBNamesFromYAML,getMusic} from 'babylonjs-samples'
+import {downloadModel,getGLBNamesFromYAML,getMusic, addFreeCamera} from 'babylonjs-samples'
 
 // Enable physics engine for object gravity and collision
 var hk = new HavokPlugin();
@@ -28,38 +28,26 @@ const earthGravity = -9.81;
 scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0);
 
 // Camera
-const camera = new FreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
-camera.rotation = new Vector3(0, Math.PI / 2, 0);
-camera.speed = 1.5;
-camera.ellipsoid = new Vector3(2, 7, 2);
-camera.applyGravity = true;
-camera.checkCollisions = true;
-camera._needMoveForGravity = true;
+const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
 camera.attachControl(canvas, true);
-
-// WASD
-camera.keysUp.push(87);
-camera.keysLeft.push(65);
-camera.keysRight.push(68);
-camera.keysDown.push(83);
 
 const audioData = await getMusic(scene,"violon.mp3");
 
-const music = new Sound(
-    "Violons",
-    audioData,
-    scene,
-    function () {
-      music.play();
-    },
-    {
-      spatialSound: true,
-      distanceModel: "exponential",
-      rolloffFactor: 1,
-      loop: true,
-      autoplay: true,
-    }
-   );
+// const music = new Sound(
+//     "Violons",
+//     audioData,
+//     scene,
+//     function () {
+//       music.play();
+//     },
+//     {
+//       spatialSound: true,
+//       distanceModel: "exponential",
+//       rolloffFactor: 1,
+//       loop: true,
+//       autoplay: true,
+//     }
+//    );
 
 
 // Lighting
