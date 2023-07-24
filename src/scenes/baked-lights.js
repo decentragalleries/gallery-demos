@@ -9,8 +9,8 @@ import {
   SceneLoader,
   MeshBuilder,
 } from "@babylonjs/core";
-import { AdvancedDynamicTexture, Button, Control } from "@babylonjs/gui";
-import { addFreeCamera, enablePhysics, addGround } from "babylonjs-samples";
+import { AdvancedDynamicTexture } from "@babylonjs/gui";
+import { addFreeCamera, enablePhysics, addGround, addCollisionBtn } from "babylonjs-samples";
 
 
 enablePhysics(scene);
@@ -35,26 +35,7 @@ window.addEventListener("resize", () => {
   gui.scaleTo(engine.getRenderWidth(), engine.getRenderHeight());
 });
 
-const collisionBtn = Button.CreateSimpleButton(
-  "collisionBtn",
-  "Disable Collision"
-);
-collisionBtn.color = "white";
-collisionBtn.background = "rgba(0, 100, 170)";
-collisionBtn.onPointerUpObservable.add(() => {
-  collisionBtn.textBlock.text = camera.checkCollisions
-    ? "Enable Collision"
-    : "Disable Collision";
-  camera.checkCollisions = !camera.checkCollisions;
-});
-collisionBtn.hoverCursor = "pointer";
-collisionBtn.thickness = 0;
-collisionBtn.height = `${0.07 * window.innerHeight}px`;
-collisionBtn.width = 0.15;
-collisionBtn.paddingRight = "10px";
-collisionBtn.paddingBottom = "10px";
-collisionBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
-collisionBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
+const collisionBtn = addCollisionBtn("collisionBtn","Disable Collision",camera);
 gui.addControl(collisionBtn);
 
 const isLocalPath = false;

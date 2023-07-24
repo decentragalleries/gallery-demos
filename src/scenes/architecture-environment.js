@@ -9,11 +9,10 @@ import {
 } from "@babylonjs/core";
 import {
   AdvancedDynamicTexture,
-  Button,
   Control,
   StackPanel,
 } from "@babylonjs/gui";
-import { addFreeCamera, enablePhysics, addGround } from "babylonjs-samples";
+import { addFreeCamera, enablePhysics, addGround, addUploadBtn, addDebugBtn, addCollisionBtn } from "babylonjs-samples";
 
 var modelNode = null;
 
@@ -79,49 +78,13 @@ stackPanel.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
 stackPanel.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
 gui.addControl(stackPanel);
 
-const uploadBtn = Button.CreateSimpleButton("uploadBtn", "Upload Model");
-uploadBtn.color = "white";
-uploadBtn.background = "rgba(0, 100, 170)";
-uploadBtn.onPointerUpObservable.add(() => {
-  fileInput.click();
-});
-uploadBtn.hoverCursor = "pointer";
-uploadBtn.thickness = 0;
-uploadBtn.height = `${0.31 * UI_HEIGHT}px`;
-uploadBtn.paddingTop = `${0.03 * UI_HEIGHT}px`;
+const uploadBtn = addUploadBtn("uploadBtn", "Upload Model", fileInput, UI_HEIGHT);
 stackPanel.addControl(uploadBtn);
 
-const debugButton = Button.CreateSimpleButton("debugButton", "Show Debugger");
-debugButton.color = "white";
-debugButton.background = "rgba(0, 100, 170)";
-debugButton.onPointerUpObservable.add(() => {
-  debugButton.textBlock.text = !debuggerOn ? "Hide Debugger" : "Show Debugger";
-  if (debuggerOn) scene.debugLayer.hide();
-  else scene.debugLayer.show();
-  debuggerOn = !debuggerOn;
-});
-debugButton.hoverCursor = "pointer";
-debugButton.thickness = 0;
-debugButton.height = `${0.31 * UI_HEIGHT}px`;
-debugButton.paddingTop = `${0.03 * UI_HEIGHT}px`;
+const debugButton = addDebugBtn("debugButton", "Show Debugger", debuggerOn, UI_HEIGHT, scene);
 stackPanel.addControl(debugButton);
 
-const collisionBtn = Button.CreateSimpleButton(
-  "collisionBtn",
-  "Disable Collision"
-);
-collisionBtn.color = "white";
-collisionBtn.background = "rgba(0, 100, 170)";
-collisionBtn.onPointerUpObservable.add(() => {
-  collisionBtn.textBlock.text = camera.checkCollisions
-    ? "Enable Collision"
-    : "Disable Collision";
-  camera.checkCollisions = !camera.checkCollisions;
-});
-collisionBtn.hoverCursor = "pointer";
-collisionBtn.thickness = 0;
-collisionBtn.height = `${0.31 * UI_HEIGHT}px`;
-collisionBtn.paddingTop = `${0.03 * UI_HEIGHT}px`;
+const collisionBtn = addCollisionBtn("collisionBtn","Disable Collision", camera, UI_HEIGHT);
 stackPanel.addControl(collisionBtn);
 
 startRenderLoop();
