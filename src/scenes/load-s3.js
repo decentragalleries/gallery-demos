@@ -7,13 +7,15 @@ import {
   HemisphericLight,
   TransformNode,
   SceneLoader,
-  MeshBuilder,
   Sound
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture} from "@babylonjs/gui";
-import {downloadModel,getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn} from 'babylonjs-samples'
+import {downloadModel,getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, addBoundingBox} from 'babylonjs-samples'
 
 enablePhysics(scene);
+
+// Enable for scene debugger:
+// scene.debugLayer.show();
 
 // Camera
 const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
@@ -45,9 +47,6 @@ const light = new HemisphericLight("light", new Vector3(1, 1, 0));
 const ground = addGround("ground", 10000.0, scene);
 new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
 
-// Enable for scene debugger:
-// scene.debugLayer.show();
-
 const gui = AdvancedDynamicTexture.CreateFullscreenUI("UI", undefined, scene);
 
 window.addEventListener("resize", () => {
@@ -57,7 +56,6 @@ window.addEventListener("resize", () => {
 const collisionBtn = addCollisionBtn("collisionBtn","Disable Collision",camera);
 gui.addControl(collisionBtn);
 
-const isLocalPath = true;
 const modelNode = new TransformNode();
 
 const loadingDiv = document.createElement("div");
@@ -68,7 +66,6 @@ document.body.appendChild(loadingDiv);
 var allChildMeshes = [];
 
 const names = await getGLBNamesFromYAML("classic gallery")
-console.log(names);
 
 for (const name of names) {
 
@@ -98,21 +95,9 @@ for (const name of names) {
             false,
             true
         );
-        mesh.scaling.x = 10;
-        mesh.scaling.y = 10;
-        mesh.scaling.z = 10;
-        mesh.showBoundingBox = true;
 
-        const boundingBox = mesh.getBoundingInfo().boundingBox;
-        const invisibleBox = MeshBuilder.CreateBox("box", {
-            height:
-            (boundingBox.maximumWorld.y - boundingBox.minimumWorld.y) * 10,
-            width: (boundingBox.maximumWorld.x - boundingBox.minimumWorld.x) * 10,
-            depth: (boundingBox.maximumWorld.z - boundingBox.minimumWorld.z) * 10,
-        });
-        invisibleBox.position = boundingBox.centerWorld;
-        invisibleBox.isVisible = false;
-        invisibleBox.checkCollisions = true;
+        mesh.scaling = new Vector3(10,10,10)
+        addBoundingBox(mesh);
         }
     });
 
@@ -120,26 +105,13 @@ for (const name of names) {
         if (!mesh.parent) {
         mesh.parent = modelNode;
         }
-        mesh.showBoundingBox = true;
 
         if (!allChildMeshes.includes(mesh)) {
-        const boundingBox = mesh.getBoundingInfo().boundingBox;
-        const invisibleBox = MeshBuilder.CreateBox("box", {
-            height:
-            (boundingBox.maximumWorld.y - boundingBox.minimumWorld.y) * 10,
-            width: (boundingBox.maximumWorld.x - boundingBox.minimumWorld.x) * 10,
-            depth: (boundingBox.maximumWorld.z - boundingBox.minimumWorld.z) * 10,
-        });
-        invisibleBox.position = boundingBox.centerWorld;
-        invisibleBox.isVisible = false;
-        invisibleBox.checkCollisions = true;
-        }
+              addBoundingBox(mesh);
+             }
     });
 
-    modelNode.scaling.x = 10;
-    modelNode.scaling.y = 10;
-    modelNode.scaling.z = 10;
-
+    modelNode.scaling = new Vector3(10,10,10)
     loadingDiv.style.display = "none";
     });
 }

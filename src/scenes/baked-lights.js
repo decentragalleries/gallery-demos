@@ -7,11 +7,12 @@ import {
   HemisphericLight,
   TransformNode,
   SceneLoader,
-  MeshBuilder,
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture } from "@babylonjs/gui";
 import { addFreeCamera, enablePhysics, addGround, addCollisionBtn } from "babylonjs-samples";
 
+// Enable for scene debugger:
+// scene.debugLayer.show();
 
 enablePhysics(scene);
 
@@ -25,9 +26,6 @@ const light = new HemisphericLight("light", new Vector3(1, 1, 0));
 // Ground
 const ground = addGround("ground", 10000.0, scene);
 new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
-
-// Enable for scene debugger:
-// scene.debugLayer.show();
 
 const gui = AdvancedDynamicTexture.CreateFullscreenUI("UI", undefined, scene);
 
@@ -73,21 +71,9 @@ SceneLoader.ImportMeshAsync(
         false,
         true
       );
-      mesh.scaling.x = 10;
-      mesh.scaling.y = 10;
-      mesh.scaling.z = 10;
-      mesh.showBoundingBox = true;
 
-      const boundingBox = mesh.getBoundingInfo().boundingBox;
-      const invisibleBox = MeshBuilder.CreateBox("box", {
-        height:
-          (boundingBox.maximumWorld.y - boundingBox.minimumWorld.y) * 10,
-        width: (boundingBox.maximumWorld.x - boundingBox.minimumWorld.x) * 10,
-        depth: (boundingBox.maximumWorld.z - boundingBox.minimumWorld.z) * 10,
-      });
-      invisibleBox.position = boundingBox.centerWorld;
-      invisibleBox.isVisible = false;
-      invisibleBox.checkCollisions = true;
+      mesh.scaling = new Vector3(10,10,10);
+      addBoundingBox(mesh);
     }
   });
 
@@ -95,26 +81,13 @@ SceneLoader.ImportMeshAsync(
     if (!mesh.parent) {
       mesh.parent = modelNode;
     }
-    mesh.showBoundingBox = true;
 
     if (!allChildMeshes.includes(mesh)) {
-      const boundingBox = mesh.getBoundingInfo().boundingBox;
-      const invisibleBox = MeshBuilder.CreateBox("box", {
-        height:
-          (boundingBox.maximumWorld.y - boundingBox.minimumWorld.y) * 10,
-        width: (boundingBox.maximumWorld.x - boundingBox.minimumWorld.x) * 10,
-        depth: (boundingBox.maximumWorld.z - boundingBox.minimumWorld.z) * 10,
-      });
-      invisibleBox.position = boundingBox.centerWorld;
-      invisibleBox.isVisible = false;
-      invisibleBox.checkCollisions = true;
+      addBoundingBox(mesh);
     }
   });
 
-  modelNode.scaling.x = 10;
-  modelNode.scaling.y = 10;
-  modelNode.scaling.z = 10;
-
+  modelNode.scaling = new Vector3(10,10,10);
   loadingDiv.style.display = "none";
 });
 
