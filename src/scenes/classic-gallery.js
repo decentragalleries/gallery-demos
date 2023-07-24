@@ -10,12 +10,12 @@ import {
   Sound
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture} from "@babylonjs/gui";
-import {downloadModel,getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, addBoundingBox} from 'babylonjs-samples'
-
-enablePhysics(scene);
+import {downloadModel,getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, addBoundingBox} from 'babylonjs-samples';
 
 // Enable for scene debugger:
 // scene.debugLayer.show();
+
+enablePhysics(scene);
 
 // Camera
 const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
@@ -56,6 +56,7 @@ window.addEventListener("resize", () => {
 const collisionBtn = addCollisionBtn("collisionBtn","Disable Collision",camera);
 gui.addControl(collisionBtn);
 
+const isLocalPath = false;
 const modelNode = new TransformNode();
 
 const loadingDiv = document.createElement("div");
@@ -69,12 +70,12 @@ const names = await getGLBNamesFromYAML("classic gallery")
 
 for (const name of names) {
 
-    var glbDataUrl = await downloadModel(name);
+    const ArrayBuffer = isLocalPath? null: await downloadModel(name);
 
     SceneLoader.ImportMeshAsync(
     "", 
-    "", 
-    glbDataUrl, 
+    isLocalPath? "/models/"+name: "",
+    ArrayBuffer, 
     scene
     ).then((result) => {
     result.transformNodes.forEach((node) => {
@@ -96,7 +97,7 @@ for (const name of names) {
             true
         );
 
-        mesh.scaling = new Vector3(10,10,10)
+        mesh.scaling = new Vector3(10,10,10);
         addBoundingBox(mesh);
         }
     });
@@ -111,7 +112,7 @@ for (const name of names) {
              }
     });
 
-    modelNode.scaling = new Vector3(10,10,10)
+    modelNode.scaling = new Vector3(10,10,10);
     loadingDiv.style.display = "none";
     });
 }

@@ -8,8 +8,8 @@ import {
   TransformNode,
   SceneLoader,
 } from "@babylonjs/core";
-import { AdvancedDynamicTexture } from "@babylonjs/gui";
-import { addFreeCamera, enablePhysics, addGround, addCollisionBtn } from "babylonjs-samples";
+import { AdvancedDynamicTexture} from "@babylonjs/gui";
+import { addFreeCamera, enablePhysics, addGround, addCollisionBtn} from 'babylonjs-samples';
 
 // Enable for scene debugger:
 // scene.debugLayer.show();
@@ -90,5 +90,4 @@ SceneLoader.ImportMeshAsync(
   modelNode.scaling = new Vector3(10,10,10);
   loadingDiv.style.display = "none";
 });
-
 startRenderLoop();
