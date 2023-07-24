@@ -15,16 +15,9 @@ import {
   PointLight,
   DirectionalLight,
 } from "@babylonjs/core";
-import { addFreeCamera } from "babylonjs-samples";
+import { addFreeCamera, enablePhysics } from "babylonjs-samples";
 
-var hk = new HavokPlugin();
-const physicsGravity = new Vector3(0, -9.81, 0);
-scene.enablePhysics(physicsGravity, hk);
-
-// Enable camera gravity
-const assumedFramesPerSecond = 10;
-const earthGravity = -9.81;
-scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0);
+enablePhysics(scene);
 
 // Camera
 const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);

@@ -15,17 +15,9 @@ import {
   Sound
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture, Button, Control } from "@babylonjs/gui";
-import {downloadModel,getGLBNamesFromYAML,getMusic, addFreeCamera} from 'babylonjs-samples'
+import {downloadModel,getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics} from 'babylonjs-samples'
 
-// Enable physics engine for object gravity and collision
-var hk = new HavokPlugin();
-const physicsGravity = new Vector3(0, 0, 0);
-scene.enablePhysics(physicsGravity, hk);
-
-// Enable camera gravity
-const assumedFramesPerSecond = 10;
-const earthGravity = -9.81;
-scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0);
+enablePhysics(scene);
 
 // Camera
 const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);

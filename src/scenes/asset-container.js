@@ -19,7 +19,7 @@ import {
   Control,
   StackPanel,
 } from "@babylonjs/gui";
-import { addFreeCamera } from "babylonjs-samples";
+import { addFreeCamera, enablePhysics } from "babylonjs-samples";
 
 const isLocalPath = false;
 const count = 5;
@@ -274,15 +274,8 @@ const importDemoModels = (container = null) => {
 
 var container = new AssetContainer(scene);
 
-// Enable physics engine for object gravity and collision
-var hk = new HavokPlugin();
-const physicsGravity = new Vector3(0, 0, 0);
-scene.enablePhysics(physicsGravity, hk);
 
-// Enable camera gravity
-const assumedFramesPerSecond = 10;
-const earthGravity = -9.81;
-scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0);
+enablePhysics(scene);
 
 // Camera
 const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);

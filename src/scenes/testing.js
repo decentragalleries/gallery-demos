@@ -1,5 +1,5 @@
 import { scene, canvas, startRenderLoop } from "../engine";
-import { HemiSphericLight, addFreeCamera } from "babylonjs-samples";
+import { HemiSphericLight, addFreeCamera, enablePhysics } from "babylonjs-samples";
 import {
   HavokPlugin,
   Vector3,
@@ -11,14 +11,8 @@ import {
   PhysicsShapeType,
 } from "@babylonjs/core";
 
-var hk = new HavokPlugin();
-const physicsGravity = new Vector3(0, -9.81, 0);
-scene.enablePhysics(physicsGravity, hk);
 
-// Enable camera gravity
-const assumedFramesPerSecond = 10;
-const earthGravity = -9.81;
-scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0);
+enablePhysics(scene);
 
 // Camera
 const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
