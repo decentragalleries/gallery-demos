@@ -1,11 +1,7 @@
 import { scene, canvas, engine, startRenderLoop } from "../engine";
 import {
-  HavokPlugin,
   Vector3,
-  FreeCamera,
   Mesh,
-  StandardMaterial,
-  Color3,
   PhysicsAggregate,
   PhysicsShapeType,
   HemisphericLight,
@@ -15,7 +11,7 @@ import {
   Sound
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture, Button, Control } from "@babylonjs/gui";
-import {downloadModel,getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics} from 'babylonjs-samples'
+import {downloadModel,getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround} from 'babylonjs-samples'
 
 enablePhysics(scene);
 
@@ -46,14 +42,7 @@ const audioData = await getMusic(scene,"violon.mp3");
 const light = new HemisphericLight("light", new Vector3(1, 1, 0));
 
 // Ground
-const ground = Mesh.CreatePlane("ground", 10000.0, scene);
-ground.rotation = new Vector3(Math.PI / 2, 0, 0);
-ground.checkCollisions = true;
-ground.position = new Vector3(0, -0.02, 0);
-const groundMaterial = new StandardMaterial("groundMaterial", scene);
-groundMaterial.alpha = 1;
-groundMaterial.diffuseColor = new Color3(0.8, 0.8, 0.8);
-ground.material = groundMaterial;
+const ground = addGround("ground", 10000.0, scene);
 new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
 
 // Enable for scene debugger:

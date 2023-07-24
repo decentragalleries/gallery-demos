@@ -1,11 +1,6 @@
 import { scene, canvas, engine, startRenderLoop } from "../engine";
 import {
-  HavokPlugin,
   Vector3,
-  FreeCamera,
-  Mesh,
-  StandardMaterial,
-  Color3,
   PhysicsAggregate,
   PhysicsShapeType,
   HemisphericLight,
@@ -19,7 +14,7 @@ import {
   Control,
   StackPanel,
 } from "@babylonjs/gui";
-import { addFreeCamera, enablePhysics } from "babylonjs-samples";
+import { addFreeCamera, enablePhysics, addGround } from "babylonjs-samples";
 
 const isLocalPath = false;
 const count = 5;
@@ -285,14 +280,7 @@ camera.attachControl(canvas, true);
 const light = new HemisphericLight("light", new Vector3(1, 1, 0));
 
 // Ground
-const ground = Mesh.CreatePlane("ground", 10000.0, scene);
-ground.rotation = new Vector3(Math.PI / 2, 0, 0);
-ground.checkCollisions = true;
-ground.position = new Vector3(0, -0.02, 0);
-const groundMaterial = new StandardMaterial("groundMaterial", scene);
-groundMaterial.alpha = 1;
-groundMaterial.diffuseColor = new Color3(0.8, 0.8, 0.8);
-ground.material = groundMaterial;
+const ground = addGround("ground", 10000.0, scene);
 new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
 
 container.meshes.push(ground);
