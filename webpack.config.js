@@ -8,7 +8,7 @@ const scenes = [
   "baked-lights",
   "moving-object-shadows",
   "testing",
-  "load-s3",
+  "classic-gallery",
 ];
 
 

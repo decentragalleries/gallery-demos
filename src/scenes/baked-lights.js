@@ -1,15 +1,12 @@
 import { scene, canvas, engine, startRenderLoop } from "../engine";
 import {
   Vector3,
-  Mesh,
   PhysicsAggregate,
   PhysicsShapeType,
   HemisphericLight,
-  TransformNode,
-  SceneLoader,
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture} from "@babylonjs/gui";
-import { addFreeCamera, enablePhysics, addGround, addCollisionBtn} from 'babylonjs-samples';
+import { addFreeCamera, enablePhysics, addGround, addCollisionBtn, importGLB} from 'babylonjs-samples';
 
 // Enable for scene debugger:
 // scene.debugLayer.show();
@@ -36,58 +33,14 @@ window.addEventListener("resize", () => {
 const collisionBtn = addCollisionBtn("collisionBtn","Disable Collision",camera);
 gui.addControl(collisionBtn);
 
-const isLocalPath = false;
-const modelNode = new TransformNode();
+const isLocalPath = true;
 
 const loadingDiv = document.createElement("div");
 loadingDiv.setAttribute("id", "loading");
 loadingDiv.innerHTML = "3D models are loading...";
 document.body.appendChild(loadingDiv);
 
-var allChildMeshes = [];
+importGLB("baked lights/baked-lights.glb",isLocalPath)
+loadingDiv.style.display = "none";
 
-SceneLoader.ImportMeshAsync(
-  "",
-  isLocalPath
-    ? "/models/baked-lights/"
-    : "https://gateway.pinata.cloud/ipfs/QmZhmR5yYZr2CYX3vudAng6MTgLMdukGghmbh3v1X4h6JR/",
-  "baked-lights.glb"
-).then((result) => {
-  result.transformNodes.forEach((node) => {
-    if (
-      node.getChildMeshes().length === node.getChildren().length &&
-      node.getChildren().length > 0
-    ) {
-      const childMeshes = node.getChildMeshes();
-
-      allChildMeshes.push(...childMeshes);
-
-      // Create a parent mesh to encapsulate the child meshes
-      var mesh = Mesh.MergeMeshes(
-        childMeshes,
-        true,
-        true,
-        undefined,
-        false,
-        true
-      );
-
-      mesh.scaling = new Vector3(10,10,10);
-      addBoundingBox(mesh);
-    }
-  });
-
-  result.meshes.forEach((mesh) => {
-    if (!mesh.parent) {
-      mesh.parent = modelNode;
-    }
-
-    if (!allChildMeshes.includes(mesh)) {
-      addBoundingBox(mesh);
-    }
-  });
-
-  modelNode.scaling = new Vector3(10,10,10);
-  loadingDiv.style.display = "none";
-});
 startRenderLoop();
