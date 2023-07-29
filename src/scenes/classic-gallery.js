@@ -4,15 +4,19 @@ import {
   PhysicsAggregate,
   PhysicsShapeType,
   HemisphericLight,
-  Sound
+  Sound,
+  Database,
+  MeshBuilder
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture} from "@babylonjs/gui";
-import {getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, importGLB} from 'babylonjs-samples';
+import {importModel,getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, importGLB, getGalleryPosition, getCameraPosition, getCameraSize, addBoundingBox} from 'babylonjs-samples';
 
 // Enable for scene debugger:
-// scene.debugLayer.show();
+scene.debugLayer.show();
 
 enablePhysics(scene);
+// engine.enableOfflineSupport = true;
+// Database.IDBStorageEnabled = true;
 
 // Camera
 const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
@@ -53,7 +57,7 @@ window.addEventListener("resize", () => {
 const collisionBtn = addCollisionBtn("collisionBtn","Disable Collision",camera);
 gui.addControl(collisionBtn);
 
-const isLocalPath = false;
+const isLocalPath = true;
 
 const loadingDiv = document.createElement("div");
 loadingDiv.setAttribute("id", "loading");
@@ -62,11 +66,17 @@ document.body.appendChild(loadingDiv);
 
 
 const names = await getGLBNamesFromYAML("classic gallery")
+const position = await getGalleryPosition("classic gallery")
+const cameraPos =  await getCameraPosition("classic gallery")
+
 
 for (var name of names) {
 
-    importGLB(name,isLocalPath);
+     importGLB(name,isLocalPath,position);
 }
+
+camera.position = new Vector3(cameraPos[0], cameraPos[1], cameraPos[2]);
+camera.maxZ = await getCameraSize("classic gallery");
 
 loadingDiv.style.display = "none";
 

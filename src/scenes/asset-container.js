@@ -16,7 +16,7 @@ import {
 } from "@babylonjs/gui";
 import { addFreeCamera, enablePhysics, addGround } from "babylonjs-samples";
 
-const isLocalPath = false;
+const isLocalPath = true;
 const count = 5;
 
 const loading = Array.from(Array(count), (el) => true);
@@ -175,7 +175,7 @@ const importDemoModels = (container = null) => {
     "Classic",
     "classic gallery/",
     "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
-    "classic gallery small base model.glb",
+    "base-model.glb",
     [3000, 13, 0],
     [2876, 31, -49],
     500,
@@ -187,7 +187,7 @@ const importDemoModels = (container = null) => {
     "Classic",
     "classic gallery/",
     "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
-    "classic gallery small door 2 part 1.glb",
+    "small-door2-part1.glb",
     [3000, 13, 0],
     [2870, 31, -34],
     500,
@@ -199,7 +199,7 @@ const importDemoModels = (container = null) => {
     "Classic",
     "classic gallery/",
     "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
-    "classic gallery small door 2 part 2.glb",
+    "small-door2-part2.glb",
     [3000, 13, 0],
     [2870, 31, -34],
     500,
@@ -211,7 +211,7 @@ const importDemoModels = (container = null) => {
     "Classic",
     "classic gallery/",
     "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
-    "classic gallery small door 1 part 1.glb",
+    "small-door1-part1.glb",
     [3000, 13, 0],
     [2870, 31, -34],
     500,
@@ -223,7 +223,7 @@ const importDemoModels = (container = null) => {
     "Classic",
     "classic gallery/",
     "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
-    "classic gallery small door 1 part 2.glb",
+    "small-door1-part2.glb",
     [3000, 13, 0],
     [2870, 31, -34],
     500,
@@ -235,7 +235,7 @@ const importDemoModels = (container = null) => {
     "Classic",
     "classic gallery/",
     "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
-    "classic gallery small frame type 1.glb",
+    "frame-type1.glb",
     [3000, 13, 0],
     [2824, 31, -185],
     500,
@@ -247,7 +247,7 @@ const importDemoModels = (container = null) => {
     "Classic",
     "classic gallery/",
     "https://gateway.pinata.cloud/ipfs/QmeT2RxNSmpJiS1wS7Y35fnBiFbf1uCoDppQr8kLsuGQ7J/",
-    "classic gallery small frame type 2.glb",
+    "frame-type2.glb",
     [2970, 13, 0],
     [2824, 31, -185],
     500,
@@ -258,7 +258,7 @@ const importDemoModels = (container = null) => {
     "Gothic",
     "gothic gallery/",
     "https://gateway.pinata.cloud/ipfs/QmYa8j4UHUBin4uPrvEkG934ZuCKXsoiPTiSJ2ExH1LFr1/",
-    "gothic gallery small.glb",
+    "base-model.glb",
     [4000, 0, 0],
     [3920, 14, -102],
     500,

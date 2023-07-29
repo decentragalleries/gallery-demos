@@ -9,7 +9,7 @@ import { AdvancedDynamicTexture} from "@babylonjs/gui";
 import { addFreeCamera, enablePhysics, addGround, addCollisionBtn, importGLB} from 'babylonjs-samples';
 
 // Enable for scene debugger:
-// scene.debugLayer.show();
+scene.debugLayer.show();
 
 enablePhysics(scene);
 
@@ -40,7 +40,7 @@ loadingDiv.setAttribute("id", "loading");
 loadingDiv.innerHTML = "3D models are loading...";
 document.body.appendChild(loadingDiv);
 
-importGLB("baked lights/baked-lights.glb",isLocalPath)
+importGLB("baked lights/baked-lights.glb",isLocalPath,[0,0,0])
 loadingDiv.style.display = "none";
 
 startRenderLoop();
