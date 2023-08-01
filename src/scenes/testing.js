@@ -10,7 +10,7 @@ import {
 enablePhysics(scene);
 
 // Camera
-const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
+const camera = addFreeCamera("FreeCamera", scene,new Vector3(0, 14, 0));
 camera.attachControl(canvas, true);
 
 // Lighting

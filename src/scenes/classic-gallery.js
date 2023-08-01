@@ -6,10 +6,10 @@ import {
   HemisphericLight,
   Sound,
   Database,
-  MeshBuilder
+  Observable
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture} from "@babylonjs/gui";
-import {importModel,getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, importGLB, getGalleryPosition, getCameraPosition, getCameraSize, addBoundingBox} from 'babylonjs-samples';
+import {getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, importGLB, getCameraPosition } from 'babylonjs-samples';
 
 // Enable for scene debugger:
 scene.debugLayer.show();
@@ -19,7 +19,7 @@ enablePhysics(scene);
 // Database.IDBStorageEnabled = true;
 
 // Camera
-const camera = addFreeCamera("FreeCamera", new Vector3(0, 14, 0), scene);
+const camera = addFreeCamera("FreeCamera", scene,new Vector3(0, 14, 0));
 camera.attachControl(canvas, true);
 
 const audioData = await getMusic(scene,"sounds/violon.mp3");
@@ -66,12 +66,26 @@ document.body.appendChild(loadingDiv);
 
 
 const names = await getGLBNamesFromYAML("classic gallery")
+const cameraPosition = await getCameraPosition("classic gallery")
 
 for (var name of names) {
 
-     importGLB(name,isLocalPath);
+        importGLB(name,isLocalPath);
 }
 
+camera.onMove = new Observable()
+
+var oldCameraPosition = { ...camera.position };
+scene.registerBeforeRender(() => {
+  const { x, y, z } = camera.position;
+  const { _x: oldX, _y: oldY, _z: oldZ } = oldCameraPosition;
+  if (x !== oldX || y !== oldY || z !== oldZ) {
+    oldCameraPosition = { ...camera.position };
+    camera.onMove.notifyObservers(camera.position);
+  }
+});
+
+camera.position = new Vector3(cameraPosition[0],cameraPosition[1],cameraPosition[2])
 
 loadingDiv.style.display = "none";
 
