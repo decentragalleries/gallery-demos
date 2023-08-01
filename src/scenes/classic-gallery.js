@@ -9,7 +9,7 @@ import {
   Observable
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture} from "@babylonjs/gui";
-import {getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, importGLB, getCameraPosition } from 'babylonjs-samples';
+import {getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, importGLB, getCameraPosition, addSky } from 'babylonjs-samples';
 
 // Enable for scene debugger:
 scene.debugLayer.show();
@@ -63,6 +63,8 @@ const loadingDiv = document.createElement("div");
 loadingDiv.setAttribute("id", "loading");
 loadingDiv.innerHTML = "3D models are loading...";
 document.body.appendChild(loadingDiv);
+
+addSky(scene);
 
 
 const names = await getGLBNamesFromYAML("classic gallery")
