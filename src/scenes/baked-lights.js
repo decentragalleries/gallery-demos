@@ -40,7 +40,7 @@ loadingDiv.setAttribute("id", "loading");
 loadingDiv.innerHTML = "3D models are loading...";
 document.body.appendChild(loadingDiv);
 
-importGLB("baked lights/baked-lights.glb",isLocalPath,[0,0,0])
+importGLB("baked lights/baked-lights.glb",isLocalPath)
 loadingDiv.style.display = "none";
 
 startRenderLoop();

@@ -66,17 +66,12 @@ document.body.appendChild(loadingDiv);
 
 
 const names = await getGLBNamesFromYAML("classic gallery")
-const position = await getGalleryPosition("classic gallery")
-const cameraPos =  await getCameraPosition("classic gallery")
-
 
 for (var name of names) {
 
-     importGLB(name,isLocalPath,position);
+     importGLB(name,isLocalPath);
 }
 
-camera.position = new Vector3(cameraPos[0], cameraPos[1], cameraPos[2]);
-camera.maxZ = await getCameraSize("classic gallery");
 
 loadingDiv.style.display = "none";
 
