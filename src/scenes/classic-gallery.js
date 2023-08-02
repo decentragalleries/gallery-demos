@@ -9,7 +9,7 @@ import {
   Observable
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture} from "@babylonjs/gui";
-import {getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, importGLB, getCameraPosition, addSky } from 'babylonjs-samples';
+import {getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, addCollisionBtn, importGLB, getCameraPosition, addSky, artPopup, importModel, getGalleryPosition } from 'babylonjs-samples';
 
 // Enable for scene debugger:
 scene.debugLayer.show();
@@ -69,10 +69,18 @@ addSky(scene);
 
 const names = await getGLBNamesFromYAML("classic gallery")
 const cameraPosition = await getCameraPosition("classic gallery")
+const position = await getGalleryPosition("classic gallery")
 
 for (var name of names) {
 
-        importGLB(name,isLocalPath);
+  if(name == "classic gallery/frame-type1.glb" || name == "classic gallery/frame-type2.glb"){
+    importModel(name,position,artPopup(scene,camera,new Vector3(2884.0, 15.0, -126.0)));
+
+  }else{
+    importModel(name,position);
+
+  }
+
 }
 
 camera.onMove = new Observable()
