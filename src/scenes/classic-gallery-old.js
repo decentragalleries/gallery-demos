@@ -15,26 +15,12 @@ import {getGLBNamesFromYAML,getMusic, addFreeCamera, enablePhysics, addGround, a
 scene.debugLayer.show();
 
 enablePhysics(scene);
+// engine.enableOfflineSupport = true;
+// Database.IDBStorageEnabled = true;
 
 // Camera
 const camera = addFreeCamera("FreeCamera", scene,new Vector3(0, 14, 0));
 camera.attachControl(canvas, true);
-
-// Lighting
-const light = new HemisphericLight("light", new Vector3(1, 1, 0));
-
-// Ground
-const ground = addGround("ground", 10000.0, scene);
-new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
-
-const gui = AdvancedDynamicTexture.CreateFullscreenUI("UI", undefined, scene);
-
-window.addEventListener("resize", () => {
-  gui.scaleTo(engine.getRenderWidth(), engine.getRenderHeight());
-});
-
-const collisionBtn = addCollisionBtn("collisionBtn","Disable Collision",camera);
-gui.addControl(collisionBtn);
 
 const audioData = await getMusic(scene,"sounds/violon.mp3");
 
@@ -55,6 +41,22 @@ const audioData = await getMusic(scene,"sounds/violon.mp3");
 //    );
 
 
+// Lighting
+const light = new HemisphericLight("light", new Vector3(1, 1, 0));
+
+// Ground
+const ground = addGround("ground", 10000.0, scene);
+new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
+
+const gui = AdvancedDynamicTexture.CreateFullscreenUI("UI", undefined, scene);
+
+window.addEventListener("resize", () => {
+  gui.scaleTo(engine.getRenderWidth(), engine.getRenderHeight());
+});
+
+const collisionBtn = addCollisionBtn("collisionBtn","Disable Collision",camera);
+gui.addControl(collisionBtn);
+
 const isLocalPath = true;
 
 const loadingDiv = document.createElement("div");
@@ -65,14 +67,14 @@ document.body.appendChild(loadingDiv);
 addSky(scene);
 
 
-const names = await getGLBNamesFromYAML("classic gallery")
-const cameraPosition = await getCameraPosition("classic gallery")
-const position = await getGalleryPosition("classic gallery")
+const names = await getGLBNamesFromYAML("classic gallery old")
+const cameraPosition = await getCameraPosition("classic gallery old")
+const position = await getGalleryPosition("classic gallery old")
 console.log(names)
 
 for (var name of names) {
 
-    importGLB(name,isLocalPath,position,true);
+    importGLB(name,true,position);
 
 
 }

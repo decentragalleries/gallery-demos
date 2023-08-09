@@ -9,6 +9,7 @@ const scenes = [
   "moving-object-shadows",
   "testing",
   "classic-gallery",
+  "classic-gallery-old",
 ];
 
 
